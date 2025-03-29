@@ -22,13 +22,18 @@ export default defineConfig([
     },
     rules: {
       ...typescriptConfigs.recommended.rules,
+    },
+  },
+  {
+    ...playwright.configs['flat/recommended'],
+    files: ['tests/**', 'page-objects/**'],
+    rules: {
       ...playwright.configs['flat/recommended'].rules,
-      'no-console': 'warn',
     },
   },
   {
     files: ['**/*.{js,mjs,cjs,ts}'],
-    plugins: { js, '@typescript-eslint': typescript, playwright: playwright },
+    plugins: { js, '@typescript-eslint': typescript },
     extends: ['js/recommended'],
   },
   tseslint.configs.recommended,

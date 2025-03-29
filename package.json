@@ -1,7 +1,7 @@
 {
   "name": "noah-tech-challenge",
   "version": "1.0.0",
-  "description": "",
+  "description": "e2e test project to promote coverage in the sauce labs checkout",
   "main": "index.js",
   "scripts": {
     "lint": "eslint tests/**/*.ts --fix"
@@ -17,7 +17,7 @@
     ]
   },
   "keywords": [],
-  "author": "",
+  "author": "Marcelo Mariath",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
