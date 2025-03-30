@@ -27,11 +27,13 @@ export default defineConfig({
     [
       '@estruyf/github-actions-reporter',
       <GitHubActionOptions>{
-        title: 'Reporter Testing',
+        title: 'Test Report',
         useDetails: true,
         showError: true,
       },
     ],
+    ['list'],
+    ['json', { outputFile: './test-results/test-results.json' }],
   ],
   //reporter: process.env.CI ? 'dot' : 'list',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
