@@ -4,7 +4,11 @@
   "description": "e2e test project to promote coverage in the sauce labs checkout",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint tests/**/*.ts --fix"
+    "lint": "eslint tests/**/*.ts --fix",
+    "test-chrome": "npx playwright test --project=chromium",
+    "test-firefox": "npx playwright test --project=firefox",
+    "test-webkit": "npx playwright test --project=webkit",
+    "test-all": "npm run test-chrome & npm run test-firefox & npm run test-webkit"
   },
   "repository": {
     "type": "git",
