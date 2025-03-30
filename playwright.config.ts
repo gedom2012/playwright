@@ -33,7 +33,6 @@ export default defineConfig({
       },
     ],
     ['list'],
-    ['json', { outputFile: './test-results/test-results.json' }],
   ],
   //reporter: process.env.CI ? 'dot' : 'list',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
