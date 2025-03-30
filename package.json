@@ -30,6 +30,7 @@
   "homepage": "https://github.com/gedom2012/noah-tech-challenge#readme",
   "devDependencies": {
     "@eslint/js": "^9.23.0",
+    "@estruyf/github-actions-reporter": "^1.10.0",
     "@playwright/test": "^1.51.1",
     "@types/node": "^22.13.13",
     "eslint": "^9.23.0",
