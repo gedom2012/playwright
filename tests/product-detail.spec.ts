@@ -5,7 +5,9 @@ test.describe('Product Detail', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/v1/index.html');
     const pm = new PageManager(page);
-    await pm.onLoginPage().loginAsStandardUser('standard_user', 'secret_sauce');
+    await pm
+      .onLoginPage()
+      .loginAsStandardUser(process.env.USERNAME as string, process.env.PASSWORD as string);
   });
 
   test('should add product to the cart from detail page', async ({ page }) => {
