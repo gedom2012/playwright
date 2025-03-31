@@ -9,12 +9,13 @@
 - [Project Overview](#project-overview)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
-- [Project Structure](#project-structure)
+- [Environment Setup](#environment-setup)
 - [Running Tests](#running-tests)
 - [Test Reports](#test-reports)
 - [Linting and Formatting](#linting-and-formatting)
 - [Git Hooks](#git-hooks)
 - [Best Practices](#best-practices)
+- [Test Architecture](#test-architecture)
 
 ## Project Overview
 
@@ -52,32 +53,73 @@ Before you begin, ensure you have the following installed:
    npx playwright install
    ```
 
+## Environment Setup
+
+The project requires environment variables for authentication. Follow these steps:
+
+1. **Create your .env file**:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Edit the .env file with your credentials**:
+
+   ```bash
+   USERNAME=your_actual_username
+   PASSWORD=your_actual_password
+   ```
+
+3. **Important: Never commit your .env file to version control!**
+
 ## Running Tests
 
 The project includes some test scripts configured in package.json:
 
-Run tests in Chromium:
+### Basic Commands
+
+- Run tests in Chromium:
 
 ```bash
 npm run test-chrome
 ```
 
-Run tests in Firefox:
+- Run tests in Firefox:
 
 ```bash
 npm run test-firefox
 ```
 
-Run tests in WebKit:
+- Run tests in WebKit:
 
 ```bash
 npm run test-webkit
 ```
 
-Run tests in all browsers in parallel:
+- Run tests in all browsers in parallel:
 
 ```bash
 npm run test-all
+```
+
+### Advanced Options
+
+- Run specific test file:
+
+```bash
+npx playwright test tests/checkout.spec.ts
+```
+
+- Run in headed mode (visible browser):
+
+```bash
+npx playwright test --headed
+```
+
+- Generate trace for debugging:
+
+```bash
+npx playwright test --trace on
 ```
 
 ## Test Reports
@@ -112,23 +154,31 @@ Code is automatically formatted after save
 
 ## Git Hooks
 
-Husky is configured to run linting on pre-commit:
+Pre-commit hooks automatically:
 
-- Automatically runs ESLint and Prettier on staged files before committing
-- Prevents committing code with linting errors
+- Format code with Prettier
+- Prevent commits with linting errors
 
 ## Best Practices
 
 This project follows these quality engineering best practices:
 
-- Page Object Model: All page interactions are abstracted in page-objects/
+- Page Object Model for maintainable selectors
 
-- Atomic Tests: Each test focuses on a single functionality
+- Environment variables for sensitive data
 
-- Cross-browser Testing: Tests run against Chromium, Firefox, and WebKit
+- Cross-browser testing coverage
 
-- CI Integration: GitHub Actions runs tests on push
+- Automated code quality checks
 
-- Code Quality: Enforced through ESLint and Prettier
+- CI/CD integration with GitHub Actions
 
-- Git Hooks: Automated code quality checks before commit
+## Test Architecture
+
+Dive deeper about of this test architecture with the following diagram
+
+- [Test Architecture Diagram](https://drive.google.com/file/d/1MYh88_TYp382WXJohELYmb-AMsJi6ENK/view?usp=sharing)
+
+---
+
+> 💡 _"Good code is its own best documentation." – Steve McConnell_
