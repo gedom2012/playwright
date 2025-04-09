@@ -1,4 +1,4 @@
-# Noah Tech Challenge - Playwright Test Automation
+# Playwright Test Automation
 
 ![Playwright](https://img.shields.io/badge/Playwright-2E8555?style=for-the-badge&logo=playwright&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
@@ -10,12 +10,14 @@
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Environment Setup](#environment-setup)
+- [Project Structure](#project-structure)
+- [Test Architecture](#test-architecture)
 - [Running Tests](#running-tests)
 - [Test Reports](#test-reports)
 - [Linting and Formatting](#linting-and-formatting)
 - [Git Hooks](#git-hooks)
 - [Best Practices](#best-practices)
-- [Test Architecture](#test-architecture)
+- [Contributing](#contributing)
 
 ## Project Overview
 
@@ -41,8 +43,8 @@ Before you begin, ensure you have the following installed:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/gedom2012/noah-tech-challenge.git
-   cd noah-tech-challenge
+   git clone https://github.com/gedom2012/playwright.git
+   cd playwright
    ```
 2. **Install dependencies**:
    ```bash
@@ -71,6 +73,32 @@ The project requires environment variables for authentication. Follow these step
    ```
 
 3. **Important: Never commit your .env file to version control!**
+
+## Project Structure
+
+```bash
+.github/             # GitHub Actions workflows
+.husky/              # Git hooks configuration
+.vscode/             # VS Code settings
+node_modules/        # Project dependencies
+page-objects/        # Page object model classes
+playwright-report/   # HTML test reports
+test-results/        # Test artifacts and screenshots
+tests/               # Test specifications
+.env.example         # Environment variables template
+.gitignore           # Git ignore rules
+.eslint.config.mjs   # ESLint configuration
+package.json         # Project metadata and scripts
+package-lock.json    # Dependency lock file
+playwright.config.ts # Playwright configuration
+prettierrc           # Prettier configuration
+```
+
+## Test Architecture
+
+Dive deeper about of this test architecture with the following diagram
+
+- [Test Architecture Diagram](https://drive.google.com/file/d/1MYh88_TYp382WXJohELYmb-AMsJi6ENK/view?usp=sharing)
 
 ## Running Tests
 
@@ -173,11 +201,14 @@ This project follows these quality engineering best practices:
 
 - CI/CD integration with GitHub Actions
 
-## Test Architecture
+## Contributing
 
-Dive deeper about of this test architecture with the following diagram
-
-- [Test Architecture Diagram](https://drive.google.com/file/d/1MYh88_TYp382WXJohELYmb-AMsJi6ENK/view?usp=sharing)
+1. Create a new branch for your feature/bugfix
+2. Write tests for new functionality
+3. Ensure all tests pass (npm run test-all)
+4. Run linter (npm run lint)
+5. Commit using conventional commit messages
+6. Open a pull request
 
 ---
 
