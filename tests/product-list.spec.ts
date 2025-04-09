@@ -3,11 +3,7 @@ import { PageManager } from '../page-objects/page-manager';
 
 test.describe('Product Listing', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/v1/index.html');
-    const pm = new PageManager(page);
-    await pm
-      .onLoginPage()
-      .loginAsStandardUser(process.env.USERNAME as string, process.env.PASSWORD as string);
+    await page.goto('/v1/inventory.html');
   });
 
   test('should display the first six available products alphabetically', async ({ page }) => {

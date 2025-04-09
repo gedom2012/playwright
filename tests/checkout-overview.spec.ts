@@ -8,11 +8,8 @@ test.describe('Checkout overview', () => {
   let secondProduct: { name: string; description: string; price: string };
 
   test.beforeEach(async ({ page }) => {
-    await page.goto('/v1/index.html');
+    await page.goto('/v1/inventory.html');
     pm = new PageManager(page);
-    await pm
-      .onLoginPage()
-      .loginAsStandardUser(process.env.USERNAME as string, process.env.PASSWORD as string);
 
     person = {
       firstName: 'John',

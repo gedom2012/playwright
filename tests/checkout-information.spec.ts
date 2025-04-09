@@ -3,12 +3,8 @@ import { PageManager } from '../page-objects/page-manager';
 
 test.describe('Checkout Information', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/v1/index.html');
+    await page.goto('/v1/inventory.html');
     const pm = new PageManager(page);
-    await pm
-      .onLoginPage()
-      .loginAsStandardUser(process.env.USERNAME as string, process.env.PASSWORD as string);
-
     const productName = 'Sauce Labs Fleece Jacket';
 
     await pm.onProductListPage().selectOnProductByNameAndClickOnAddToCartButton(productName);
