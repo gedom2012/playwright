@@ -1,39 +1,38 @@
-import { expect, test } from '@playwright/test';
-import { PageManager } from '../page-objects/page-manager';
+import { expect } from '@playwright/test';
+import { test } from '../test-option';
 
 test.describe('Product Detail', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/v1/inventory.html');
+  test.beforeEach(async ({ page, inventoryURL }) => {
+    await page.goto(inventoryURL);
   });
 
-  test('should add product to the cart from detail page', async ({ page }) => {
-    const pm = new PageManager(page);
+  test('should add product to the cart from detail page', async ({ pageManager }) => {
     const productName = 'Sauce Labs Fleece Jacket';
 
-    await pm.onProductListPage().selectOnProductByNameAndNavigateToItsDetail(productName);
-    await pm.onProductDetailPage().clickOnAddToCartButton();
-    const shoppingCartItems = await pm.onProductDetailPage().checkTotalOProductsInShoppingCart();
+    await pageManager.onProductListPage().selectOnProductByNameAndNavigateToItsDetail(productName);
+    await pageManager.onProductDetailPage().clickOnAddToCartButton();
+    const shoppingCartItems = await pageManager
+      .onProductDetailPage()
+      .checkTotalOProductsInShoppingCart();
 
     expect(shoppingCartItems).toEqual('1');
   });
 
-  test('should remove product from the cart from detail page', async ({ page }) => {
-    const pm = new PageManager(page);
+  test('should remove product from the cart from detail page', async ({ pageManager }) => {
     const productName = 'Sauce Labs Fleece Jacket';
 
-    await pm.onProductListPage().selectOnProductByNameAndNavigateToItsDetail(productName);
-    await pm.onProductDetailPage().clickOnAddToCartButton();
-    await pm.onProductDetailPage().clickOnRemoveButton();
+    await pageManager.onProductListPage().selectOnProductByNameAndNavigateToItsDetail(productName);
+    await pageManager.onProductDetailPage().clickOnAddToCartButton();
+    await pageManager.onProductDetailPage().clickOnRemoveButton();
 
-    expect(pm.onProductDetailPage().shoppingCartShouldBeEmpty()).toBeTruthy();
+    expect(pageManager.onProductDetailPage().shoppingCartShouldBeEmpty()).toBeTruthy();
   });
 
-  test('should navigate back to the product listing', async ({ page }) => {
-    const pm = new PageManager(page);
+  test('should navigate back to the product listing', async ({ page, pageManager }) => {
     const productName = 'Sauce Labs Fleece Jacket';
 
-    await pm.onProductListPage().selectOnProductByNameAndNavigateToItsDetail(productName);
-    await pm.onProductDetailPage().clickOnBackButton();
+    await pageManager.onProductListPage().selectOnProductByNameAndNavigateToItsDetail(productName);
+    await pageManager.onProductDetailPage().clickOnBackButton();
 
     await expect(page).toHaveURL('v1/inventory.html');
   });

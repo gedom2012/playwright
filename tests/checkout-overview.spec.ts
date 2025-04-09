@@ -1,15 +1,13 @@
-import { expect, test } from '@playwright/test';
-import { PageManager } from '../page-objects/page-manager';
+import { expect } from '@playwright/test';
+import { test } from '../test-option';
 
 test.describe('Checkout overview', () => {
-  let pm: PageManager;
   let person: { firstName: string; lastName: string; postalCode: string };
   let firstProduct: { name: string; description: string; price: string };
   let secondProduct: { name: string; description: string; price: string };
 
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/v1/inventory.html');
-    pm = new PageManager(page);
+  test.beforeEach(async ({ page, inventoryURL }) => {
+    await page.goto(inventoryURL);
 
     person = {
       firstName: 'John',
@@ -32,27 +30,31 @@ test.describe('Checkout overview', () => {
     };
   });
 
-  test('should successfully complete the checkout', async ({ page }) => {
-    await pm.onProductListPage().selectOnProductByNameAndClickOnAddToCartButton(firstProduct.name);
-    await pm.onProductListPage().selectOnProductByNameAndClickOnAddToCartButton(secondProduct.name);
-    await pm.onProductListPage().goToShoppingCart();
-    await pm.onShoppingCartPage().clickOnCheckoutButton();
+  test('should successfully complete the checkout', async ({ page, pageManager }) => {
+    await pageManager
+      .onProductListPage()
+      .selectOnProductByNameAndClickOnAddToCartButton(firstProduct.name);
+    await pageManager
+      .onProductListPage()
+      .selectOnProductByNameAndClickOnAddToCartButton(secondProduct.name);
+    await pageManager.onProductListPage().goToShoppingCart();
+    await pageManager.onShoppingCartPage().clickOnCheckoutButton();
 
-    await pm
+    await pageManager
       .onCheckoutInformationPage()
       .fillOutPersonalInformationForm(person.firstName, person.lastName, person.postalCode);
-    await pm.onCheckoutInformationPage().clickOnContinueButton();
+    await pageManager.onCheckoutInformationPage().clickOnContinueButton();
 
     //checkout validations
-    const totalItemsByProductOnCheckoutOverview = await pm
+    const totalItemsByProductOnCheckoutOverview = await pageManager
       .onCheckoutOverviewPage()
       .getTotalOfProducts();
-    const productsOnCheckoutOverview = await pm.onCheckoutOverviewPage().getItemsList();
-    const paymentInformation = await pm.onCheckoutOverviewPage().getPaymentInformation();
-    const shippingInformation = await pm.onCheckoutOverviewPage().getShippingInformation();
-    const totalItemAmount = await pm.onCheckoutOverviewPage().getItemTotalAmount();
-    const totalAmount = await pm.onCheckoutOverviewPage().getTotalAmount();
-    const tax = await pm.onCheckoutOverviewPage().getTax();
+    const productsOnCheckoutOverview = await pageManager.onCheckoutOverviewPage().getItemsList();
+    const paymentInformation = await pageManager.onCheckoutOverviewPage().getPaymentInformation();
+    const shippingInformation = await pageManager.onCheckoutOverviewPage().getShippingInformation();
+    const totalItemAmount = await pageManager.onCheckoutOverviewPage().getItemTotalAmount();
+    const totalAmount = await pageManager.onCheckoutOverviewPage().getTotalAmount();
+    const tax = await pageManager.onCheckoutOverviewPage().getTax();
     expect.soft(totalItemsByProductOnCheckoutOverview).toStrictEqual(['1', '1']);
     expect.soft(productsOnCheckoutOverview).toStrictEqual([firstProduct, secondProduct]);
     expect.soft(paymentInformation).toEqual('SauceCard #31337');
@@ -62,12 +64,16 @@ test.describe('Checkout overview', () => {
     expect.soft(totalAmount).toEqual('Total: $49.66');
 
     //validations om checkout complete
-    await pm.onCheckoutOverviewPage().clickOnFinishButton();
+    await pageManager.onCheckoutOverviewPage().clickOnFinishButton();
     await expect.soft(page).toHaveURL('/v1/checkout-complete.html');
 
-    const titleMessageOnDisplay = await pm.onCheckoutFinishPage().getDisplayedTitleMessage();
-    const contentMessageOnDisplay = await pm.onCheckoutFinishPage().getDisplayedContentMessage();
-    const imageOnDisplay = await pm.onCheckoutFinishPage().getDisplayedImage();
+    const titleMessageOnDisplay = await pageManager
+      .onCheckoutFinishPage()
+      .getDisplayedTitleMessage();
+    const contentMessageOnDisplay = await pageManager
+      .onCheckoutFinishPage()
+      .getDisplayedContentMessage();
+    const imageOnDisplay = await pageManager.onCheckoutFinishPage().getDisplayedImage();
 
     await expect.soft(titleMessageOnDisplay).toBeVisible();
     expect
@@ -78,18 +84,20 @@ test.describe('Checkout overview', () => {
     await expect.soft(imageOnDisplay).toBeVisible();
   });
 
-  test('should allow canceling the checkout', async ({ page }) => {
+  test('should allow canceling the checkout', async ({ page, pageManager }) => {
     const productName = 'Sauce Labs Bolt T-Shirt';
 
-    await pm.onProductListPage().selectOnProductByNameAndClickOnAddToCartButton(productName);
-    await pm.onProductListPage().goToShoppingCart();
-    await pm.onShoppingCartPage().clickOnCheckoutButton();
-    await pm
+    await pageManager
+      .onProductListPage()
+      .selectOnProductByNameAndClickOnAddToCartButton(productName);
+    await pageManager.onProductListPage().goToShoppingCart();
+    await pageManager.onShoppingCartPage().clickOnCheckoutButton();
+    await pageManager
       .onCheckoutInformationPage()
       .fillOutPersonalInformationForm(person.firstName, person.lastName, person.postalCode);
-    await pm.onCheckoutInformationPage().clickOnContinueButton();
+    await pageManager.onCheckoutInformationPage().clickOnContinueButton();
 
-    await pm.onCheckoutOverviewPage().clickOnCancelButton();
+    await pageManager.onCheckoutOverviewPage().clickOnCancelButton();
     await expect.soft(page).toHaveURL('v1/inventory.html');
   });
 });

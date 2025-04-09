@@ -1,13 +1,12 @@
-import { expect, test } from '@playwright/test';
-import { PageManager } from '../page-objects/page-manager';
+import { expect } from '@playwright/test';
+import { test } from '../test-option';
 
 test.describe('Cart', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/v1/inventory.html');
+  test.beforeEach(async ({ page, inventoryURL }) => {
+    await page.goto(inventoryURL);
   });
 
-  test('should display all products added to the cart', async ({ page }) => {
-    const pm = new PageManager(page);
+  test('should display all products added to the cart', async ({ pageManager }) => {
     const product = {
       name: 'Sauce Labs Fleece Jacket',
       description:
@@ -15,27 +14,27 @@ test.describe('Cart', () => {
       price: '49.99',
     };
 
-    await pm.onProductListPage().selectOnProductByNameAndClickOnAddToCartButton(product.name);
-    await pm.onProductListPage().goToShoppingCart();
+    await pageManager
+      .onProductListPage()
+      .selectOnProductByNameAndClickOnAddToCartButton(product.name);
+    await pageManager.onProductListPage().goToShoppingCart();
 
-    const itemsCheckoutList = await pm.onShoppingCartPage().getItemsList();
+    const itemsCheckoutList = await pageManager.onShoppingCartPage().getItemsList();
     expect(itemsCheckoutList[0]).toStrictEqual(product);
   });
 
-  test('should remove a product from the cart', async ({ page }) => {
-    const pm = new PageManager(page);
+  test('should remove a product from the cart', async ({ pageManager }) => {
     const name = 'Sauce Labs Fleece Jacket';
 
-    await pm.onProductListPage().selectOnProductByNameAndClickOnAddToCartButton(name);
-    await pm.onProductListPage().goToShoppingCart();
-    await pm.onShoppingCartPage().clickOnRemoveButton();
+    await pageManager.onProductListPage().selectOnProductByNameAndClickOnAddToCartButton(name);
+    await pageManager.onProductListPage().goToShoppingCart();
+    await pageManager.onShoppingCartPage().clickOnRemoveButton();
 
-    const shoppingCartItems = await pm.onShoppingCartPage().shoppingCartShouldBeEmpty();
+    const shoppingCartItems = await pageManager.onShoppingCartPage().shoppingCartShouldBeEmpty();
     await expect(shoppingCartItems).toBeHidden();
   });
 
-  test('should navigate to product detail page from the cart', async ({ page }) => {
-    const pm = new PageManager(page);
+  test('should navigate to product detail page from the cart', async ({ pageManager }) => {
     const product = {
       name: 'Sauce Labs Fleece Jacket',
       description:
@@ -43,26 +42,27 @@ test.describe('Cart', () => {
       price: '$49.99',
     };
 
-    await pm.onProductListPage().selectOnProductByNameAndClickOnAddToCartButton(product.name);
-    await pm.onProductListPage().goToShoppingCart();
-    await pm.onShoppingCartPage().selectOnProductByNameAndNavigateToItsDetail(product.name);
+    await pageManager
+      .onProductListPage()
+      .selectOnProductByNameAndClickOnAddToCartButton(product.name);
+    await pageManager.onProductListPage().goToShoppingCart();
+    await pageManager
+      .onShoppingCartPage()
+      .selectOnProductByNameAndNavigateToItsDetail(product.name);
 
-    const expectedProduct = await pm.onProductDetailPage().getProductDetail();
+    const expectedProduct = await pageManager.onProductDetailPage().getProductDetail();
     expect(expectedProduct).toStrictEqual(product);
   });
 
-  test('should navigate back to the product listing', async ({ page }) => {
-    const pm = new PageManager(page);
+  test('should navigate back to the product listing', async ({ pageManager }) => {
+    await pageManager.onProductListPage().goToShoppingCart();
+    await pageManager.onShoppingCartPage().clickOnContinueShoppingButton();
 
-    await pm.onProductListPage().goToShoppingCart();
-    await pm.onShoppingCartPage().clickOnContinueShoppingButton();
-
-    const listOfProducts = await pm.onProductListPage().getItemsList();
+    const listOfProducts = await pageManager.onProductListPage().getItemsList();
     expect(listOfProducts).toHaveLength(6);
   });
 
-  test('should proceed to checkout when cart has items', async ({ page }) => {
-    const pm = new PageManager(page);
+  test('should proceed to checkout when cart has items', async ({ pageManager }) => {
     const product = {
       name: 'Sauce Labs Fleece Jacket',
       description:
@@ -70,11 +70,15 @@ test.describe('Cart', () => {
       price: '$49.99',
     };
 
-    await pm.onProductListPage().selectOnProductByNameAndClickOnAddToCartButton(product.name);
-    await pm.onProductListPage().goToShoppingCart();
-    await pm.onShoppingCartPage().clickOnCheckoutButton();
+    await pageManager
+      .onProductListPage()
+      .selectOnProductByNameAndClickOnAddToCartButton(product.name);
+    await pageManager.onProductListPage().goToShoppingCart();
+    await pageManager.onShoppingCartPage().clickOnCheckoutButton();
 
-    const checkoutInfo = await pm.onCheckoutInformationPage().getCheckoutInformationTitle();
+    const checkoutInfo = await pageManager
+      .onCheckoutInformationPage()
+      .getCheckoutInformationTitle();
     expect(checkoutInfo).toEqual('Checkout: Your Information');
   });
 });
