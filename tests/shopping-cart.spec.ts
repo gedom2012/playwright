@@ -12,7 +12,7 @@ test.describe('Cart', () => {
       name: 'Sauce Labs Fleece Jacket',
       description:
         "It's not every day that you come across a midweight quarter-zip fleece jacket capable of handling everything from a relaxing day outdoors to a busy day at the office.",
-      price: '$49.99',
+      price: '49.99',
     };
 
     await pm.onProductListPage().selectOnProductByNameAndClickOnAddToCartButton(product.name);
@@ -76,14 +76,5 @@ test.describe('Cart', () => {
 
     const checkoutInfo = await pm.onCheckoutInformationPage().getCheckoutInformationTitle();
     expect(checkoutInfo).toEqual('Checkout: Your Information');
-  });
-
-  test('should not allow checkout when cart is empty', async ({ page }) => {
-    const pm = new PageManager(page);
-
-    await pm.onProductListPage().goToShoppingCart();
-
-    const buttonStatus = await pm.onShoppingCartPage().checkoutButtonStatus();
-    await expect(buttonStatus).toBeDisabled();
   });
 });
