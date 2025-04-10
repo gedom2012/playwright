@@ -70,6 +70,11 @@ export default defineConfig<TestOptions>({
       use: { ...devices['Desktop Safari'], storageState: './auth/user.json' },
       dependencies: ['setup'],
     },
+    {
+      name: 'mobile',
+      use: { ...devices['iPhone 15 Pro'], storageState: './auth/user.json' },
+      dependencies: ['setup'],
+    },
 
     /* Test against mobile viewports. */
     // {
