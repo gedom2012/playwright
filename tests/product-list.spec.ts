@@ -9,10 +9,10 @@ test.describe('Product Listing', () => {
   test('should display the first six available products alphabetically', async ({
     pageManager,
   }) => {
-    const productItems = await pageManager.onProductListPage().getItemsList();
+    const inventory = await pageManager.onProductListPage().getInventory();
 
-    expect.soft(productItems).toHaveLength(6);
-    expect.soft(productItems[0].name).toEqual('Sauce Labs Backpack');
+    //visual testing
+    await expect(inventory).toHaveScreenshot();
   });
 
   test('should sort products in descending alphabetical order', async ({ pageManager }) => {

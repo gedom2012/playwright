@@ -4,11 +4,13 @@ import { HelperBase } from './helper-base';
 export class ProductListPage extends HelperBase {
   readonly combobox: Locator;
   readonly goLevelUp: Locator;
+  readonly inventory: Locator;
 
   constructor(page: Page) {
     super(page);
     this.combobox = page.getByRole('combobox');
     this.goLevelUp = page.locator('..');
+    this.inventory = page.locator('.inventory_container');
   }
 
   async sortProductListBy(sortBy: string) {
@@ -26,5 +28,9 @@ export class ProductListPage extends HelperBase {
       .locator(this.goLevelUp)
       .locator(this.addButton)
       .click();
+  }
+
+  async getInventory() {
+    return this.inventory;
   }
 }
