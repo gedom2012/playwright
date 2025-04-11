@@ -3,6 +3,8 @@
 ![Playwright](https://img.shields.io/badge/Playwright-2E8555?style=for-the-badge&logo=playwright&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
+![DotEnv](https://img.shields.io/badge/.ENV-ECD53F?style=for-the-badge&logo=dotenv&logoColor=000)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
 ## Table of Contents
 
@@ -10,6 +12,7 @@
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Environment Setup](#environment-setup)
+- [Docker Support](#docker-support)
 - [Project Structure](#project-structure)
 - [Test Architecture](#test-architecture)
 - [Running Tests](#running-tests)
@@ -74,6 +77,54 @@ The project requires environment variables for authentication. Follow these step
 
 3. **Important: Never commit your .env file to version control!**
 
+## Docker Support
+
+The project includes Docker configuration for containerized test execution:
+
+### Docker Files
+
+- Dockerfile: Based on official Playwright image with all dependencies
+
+- docker-compose.yaml: Defines the test service with volume mounts
+
+### Running Tests with Docker
+
+- Build the Docker Image
+
+```bash
+docker-compose build
+```
+
+- Run Tests in Container
+
+```bash
+docker-compose up
+```
+
+### Run Specific Test Command
+
+- Override the default command:
+
+```bash
+docker-compose run playwright-test npm run test-firefox
+```
+
+### Persistent Reports
+
+Reports are saved to your host machine through mounted volumes:
+
+- ./playwright-report/ - HTML test reports
+
+- ./test-results/ - Test artifacts and screenshots
+
+### Clean Up
+
+- Stop containers and remove volumes:
+
+```bash
+docker-compose down -v
+```
+
 ## Project Structure
 
 ```bash
@@ -92,6 +143,8 @@ package.json         # Project metadata and scripts
 package-lock.json    # Dependency lock file
 playwright.config.ts # Playwright configuration
 prettierrc           # Prettier configuration
+Dockerfile           # Docker configuration
+docker-compose.yaml  # Docker compose setup
 ```
 
 ## Test Architecture
@@ -200,6 +253,8 @@ This project follows these quality engineering best practices:
 - Automated code quality checks
 
 - CI/CD integration with GitHub Actions
+
+- Containerized testing with Docker
 
 ## Contributing
 
