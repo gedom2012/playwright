@@ -8,3 +8,4 @@ services:
     volumes:
       - ./playwright-report/:/app/playwright-report
       - ./test-results/:/app/test-results
+      
